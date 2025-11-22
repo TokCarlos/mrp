@@ -1,0 +1,74 @@
+RESUMO COMPILADO – SISTEMA MRP + PCP + FRONT-END JPL
+
+1. OBJETIVO GERAL
+Criar um sistema interno para a JPL Metalúrgica composto por:
+- Front-end HTML/CSS/JS (painel industrial moderno)
+- Integração futura com banco de dados (SQLite → MySQL)
+- Migração das rotinas Excel/VBA (O.P, Estoque, Corte, MRP)
+- Operação unificada em interface web
+
+2. FRONT-END (STATUS ATUAL)
+• Estrutura HTML finalizada (header fixo, menus, submenus bubble).
+• Estilo industrial com imagem de fundo, blur e transparências.
+• Correções de zoom aplicadas:
+  - Header imune ao zoom (transform scale inverso).
+  - Body ajustado dinamicamente conforme altura real do header.
+• Submenus do tipo “bolha”, flutuantes, com animação.
+• Sistema de carregamento de páginas via JS (loadPage).
+
+3. MELHORIAS SOLICITADAS E IMPLEMENTADAS
+• Correção para impedir header de sair da tela.
+• Ajuste do body para nunca ficar atrás do header.
+• Submenus redesenhados como janelas flutuantes.
+• Inclusão de setas animadas nos menus.
+• Fundo industrial com esmaecimento suave.
+• Esquematização inicial para responsividade futura.
+
+4. ROTA FUTURA DO SISTEMA
+A. Banco de Dados
+- Excel continuará como protótipo.
+- Versão profissional deve migrar para banco SQL.
+- Recomendação:
+  1) SQLite no início (arquivo único, rápido, simples).
+  2) MySQL ou MariaDB quando multiusuário for necessário.
+
+B. API / BACK-END
+- Node.js recomendado para servir o front-end e integrar DB.
+- Possibilidade de migrar dados das planilhas Excel → SQLite.
+
+C. Estruturas do banco (proposta inicial)
+- Produtos
+- Obras
+- Ordens de Produção (OP)
+- Itens da OP
+- Materiais
+- Estoque
+- Movimentações
+- Cortes (Tubos/Chapas)
+- Compras
+- Pedidos
+- Fornecedores
+- Estruturas BOM (lista de materiais de cada aparelho)
+
+5. MRP + PCP INTEGRAÇÃO
+• Tornar o HTML o painel principal.
+• O banco de dados será o novo backend.
+• Excel deixa de ser fonte e vira apenas “interface temporária”.
+• OP gerada → alimenta estoque → alimenta BOM → aponta corte → registra histórico.
+
+6. NOVAS PÁGINAS QUE PODEM SER CRIADAS
+- Dashboard inicial com KPIs
+- Gestão de Aparelhos (Lista BOM)
+- Registro de Corte em tempo real
+- MRP automático (necessidade por demanda)
+- Análises de compras
+
+7. ENCAMINHAMENTO
+• Estrutura atual do front-end está sólida e profissional.
+• Próxima grande etapa: DEFINIR O BANCO DE DADOS.
+• Após isso:
+  - Criar API
+  - Implementar CRUD do sistema
+  - Integrar com dados que hoje vêm do Excel
+
+Este documento registra a visão consolidada, decisões técnicas e rota futura do sistema MRP/PCP JPL.
