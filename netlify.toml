@@ -1,5 +1,5 @@
 [build]
-  base = "mrp"
+  base = "."
   publish = "front_end"
 
 [functions]
