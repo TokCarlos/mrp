@@ -11,38 +11,24 @@
 <body class="login-body">
 
 <div class="login-box">
-
     <h2>Acesso ao Sistema</h2>
 
-    <input id="email"
-           type="email"
-           placeholder="Email"
-           autocomplete="username"
-           required>
-
-    <input id="password"
-           type="password"
-           placeholder="Senha"
-           autocomplete="current-password"
-           required>
+    <input id="email" type="email" placeholder="Email" autocomplete="username" required>
+    <input id="password" type="password" placeholder="Senha" autocomplete="current-password" required>
 
     <button id="btnLogin">Entrar</button>
-
     <p id="loginMsg"></p>
 </div>
 
-<!-- LOGIN SCRIPT -->
 <script type="module">
     import { loginUser } from "./js/auth.js";
 
-    const btnLogin = document.getElementById("btnLogin");
+    const btn = document.getElementById("btnLogin");
     const msg = document.getElementById("loginMsg");
 
-    btnLogin.addEventListener("click", async () => {
-        msg.textContent = "";
-
-        const email = (document.getElementById("email").value || "").trim();
-        const pass  = (document.getElementById("password").value || "").trim();
+    btn.addEventListener("click", async () => {
+        const email = document.getElementById("email").value.trim();
+        const pass = document.getElementById("password").value.trim();
 
         if (!email || !pass) {
             msg.textContent = "Preencha todos os campos.";
@@ -50,24 +36,19 @@
         }
 
         msg.textContent = "Validando...";
-        console.clear();
 
         try {
             const result = await loginUser(email, pass);
-            console.log("Retorno login:", result);
 
             if (result?.tokens?.access_token) {
-                msg.textContent = "Acesso permitido. Redirecionando...";
-                setTimeout(() => {
-                    window.location.href = "dashboard.html";
-                }, 500);
+                msg.textContent = "Acesso permitido. Entrando...";
+                setTimeout(() => window.location.href = "dashboard.html", 300);
             } else {
                 msg.textContent = "Login inválido.";
             }
-
-        } catch (e) {
-            msg.textContent = "Erro ao conectar. Tente novamente.";
-            console.error("Erro login:", e);
+        } catch (err) {
+            msg.textContent = "Erro ao conectar.";
+            console.error(err);
         }
     });
 </script>

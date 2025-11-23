@@ -2,13 +2,9 @@
 // AUTH CLIENT – STACK AUTH + FRONT-END MRP
 // ============================================
 
-// Dados do seu projeto Stack Auth
 const STACK_PROJECT_ID = "f222b83c-8fa8-4478-9e48-07788ec1a1cf";
 const STACK_PUBLIC_KEY = "pck_dw10n0zsne82ndgk9j9ecd5rheekhq3vxgkfpygb7krer";
-
-// Endpoint base
 const STACK_BASE = "https://api.stack-auth.com/api/v1";
-
 
 // ------------------------------------------------------------
 // JWT STORAGE
@@ -27,9 +23,8 @@ export function logout() {
     window.location.href = "login.html";
 }
 
-
 // ------------------------------------------------------------
-// Registrar usuário (não será usado agora, mas mantemos ok)
+// REGISTRO (deixamos disponível)
 // ------------------------------------------------------------
 export async function registerUser(email, password) {
     email = (email || "").trim();
@@ -40,39 +35,40 @@ export async function registerUser(email, password) {
         headers: {
             "Content-Type": "application/json",
             "x-stack-project-id": STACK_PROJECT_ID,
-            "x-stack-publishable-client-key": STACK_PUBLIC_KEY
+            "x-stack-publishable-client-key": STACK_PUBLIC_KEY,
+            "x-stack-access-type": "client"
         },
         body: JSON.stringify({ email, password })
     });
 
     let data = {};
     try { data = await res.json(); } catch {}
-
     return data;
 }
 
-
 // ------------------------------------------------------------
-// Login do usuário
+// LOGIN (VERSÃO CORRETA)
 // ------------------------------------------------------------
 export async function loginUser(email, password) {
     email = (email || "").trim();
     password = (password || "").trim();
+
+    const payload = { email, password };
 
     const res = await fetch(`${STACK_BASE}/auth/login/email`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "x-stack-project-id": STACK_PROJECT_ID,
-            "x-stack-publishable-client-key": STACK_PUBLIC_KEY
+            "x-stack-publishable-client-key": STACK_PUBLIC_KEY,
+            "x-stack-access-type": "client"
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify(payload)
     });
 
     let data = {};
     try { data = await res.json(); } catch {}
 
-    // Salva token se existir
     if (data?.tokens?.access_token) {
         saveJWT(data.tokens.access_token);
     }
@@ -80,9 +76,8 @@ export async function loginUser(email, password) {
     return data;
 }
 
-
 // ------------------------------------------------------------
-// Validação de JWT (servidor)
+// VALIDAR JWT NO SERVIDOR
 // ------------------------------------------------------------
 export async function validateJWT(token) {
     if (!token) return null;
@@ -95,7 +90,8 @@ export async function validateJWT(token) {
                 headers: {
                     "Content-Type": "application/json",
                     "x-stack-project-id": STACK_PROJECT_ID,
-                    "x-stack-publishable-client-key": STACK_PUBLIC_KEY
+                    "x-stack-publishable-client-key": STACK_PUBLIC_KEY,
+                    "x-stack-access-type": "client"
                 },
                 body: JSON.stringify({ token })
             }

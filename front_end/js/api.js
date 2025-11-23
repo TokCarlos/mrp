@@ -4,17 +4,13 @@
 
 const API_URL = "https://ep-silent-sunset-ae8s7qbr.apirest.c-2.us-east-2.aws.neon.tech/neondb/rest/v1";
 
-// JWT do usuário autenticado (será carregado do localStorage)
 function getJWT() {
     return localStorage.getItem("stack_jwt") || "";
 }
 
 // ------------------------------------------------------------
-// GET genérico (SELECT)
-// ------------------------------------------------------------
 export async function neonGET(table, params = {}) {
     const token = getJWT();
-
     const url = new URL(`${API_URL}/${table}`);
 
     Object.keys(params).forEach(key => {
@@ -38,8 +34,6 @@ export async function neonGET(table, params = {}) {
 }
 
 // ------------------------------------------------------------
-// INSERT genérico (POST)
-// ------------------------------------------------------------
 export async function neonINSERT(table, data) {
     const token = getJWT();
 
@@ -62,12 +56,10 @@ export async function neonINSERT(table, data) {
 }
 
 // ------------------------------------------------------------
-// UPDATE genérico (PATCH)
-// ------------------------------------------------------------
 export async function neonUPDATE(table, filter = {}, data) {
     const token = getJWT();
-
     const url = new URL(`${API_URL}/${table}`);
+
     Object.keys(filter).forEach(key => {
         url.searchParams.append(key, filter[key]);
     });
@@ -91,12 +83,10 @@ export async function neonUPDATE(table, filter = {}, data) {
 }
 
 // ------------------------------------------------------------
-// DELETE genérico (DELETE)
-// ------------------------------------------------------------
 export async function neonDELETE(table, filter = {}) {
     const token = getJWT();
-
     const url = new URL(`${API_URL}/${table}`);
+
     Object.keys(filter).forEach(key => {
         url.searchParams.append(key, filter[key]);
     });
@@ -117,8 +107,6 @@ export async function neonDELETE(table, filter = {}) {
     return await safeJSON(res);
 }
 
-// ------------------------------------------------------------
-// Segurança extra: evita crash se JSON vier vazio ou inválido
 // ------------------------------------------------------------
 async function safeJSON(res) {
     try {
