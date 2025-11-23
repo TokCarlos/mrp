@@ -1,0 +1,6 @@
+[build]
+  base = "mrp"
+  publish = "front_end"
+
+[functions]
+  directory = "netlify/functions"
