@@ -357,3 +357,54 @@ nav ul li a:hover {
 .menu-locked .arrow {
     opacity: 0.4;
 }
+/* ============================================================
+   AJUSTE DO HEADER / LAYOUT / BOTÃO LOGOUT
+============================================================ */
+
+/* Deixa o header com espaçamento inteligente */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px; /* ajuda a respirar */
+    padding: 10px 30px; /* margem interna no header */
+}
+
+/* Organiza nav e logout lado-a-lado */
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Correção para manter a área de navegação estável */
+header nav {
+    margin-right: auto;
+    margin-left: 30px; /* separa do logo */
+}
+
+/* BOTÃO LOGOUT — fica à direita com espaçamento */
+.logout-btn {
+    padding: 8px 18px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 40px;        /* MAIS espaçamento que os outros menus */
+    white-space: nowrap;
+}
+
+/* Efeito ao passar o mouse */
+.logout-btn:hover {
+    background: #b71c1c;
+}
+
+/* ============================================================
+   MARGEM GLOBAL DO SITE (evita conteúdo colado nas bordas)
+============================================================ */
+main, section, .content-area, body {
+    margin-left: 20px;
+    margin-right: 20px;
+}
