@@ -1,291 +1,272 @@
-/* ====================================================== */
-/* GLOBAL LAYOUT                                          */
-/* ====================================================== */
+/* ======================================================
+   BASE GLOBAL
+====================================================== */
+:root {
+    --header-height: 88px;
+    --page-max-width: 1280px;
+    --page-padding-x: 24px;
+
+    --color-bg-dark: #111319;
+    --color-accent: #ed1c24;
+    --color-accent-dark: #c62828;
+    --color-text: #ffffff;
+    --color-text-muted: #cccccc;
+    --color-panel: rgba(0, 0, 0, 0.55);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-    color: #ffffff; /* texto branco total */
-    position: relative;
-
-    /* fundo industrial com imagem */
+    color: var(--color-text);
     background: url("../img/background_jpl.png") no-repeat center center fixed;
-	background-size: cover;
+    background-size: cover;
     overflow-x: hidden;
 }
 
-/* ==== SOBREPOSIÇÃO MAIS SUAVE (menos esmaecido) ==== */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-
-    /* redução da opacidade: antes 0.60, agora 0.35 */
-    background: rgba(0, 0, 0, 0.35);  
-    backdrop-filter: blur(2px); /* blur mais leve */
-
-    z-index: -1;
+/* Área principal abaixo do header fixo */
+main {
+    max-width: var(--page-max-width);
+    margin: var(--header-height) auto 0;
+    padding: 24px var(--page-padding-x);
 }
 
-/* ====================================================== */
-/* MAIN CONTAINER                                         */
-/* ====================================================== */
+/* Links padrão */
+a {
+    text-decoration: none;
+    color: var(--color-text);
+}
 
-main, #content-area {
-    padding-top: var(--header-height); /* altura real do header */
-    margin-left: 56px;
-    margin-right: 56px;
-    padding-bottom: 40px;
+/* Títulos genéricos */
+h1, h2, h3 {
+    margin: 0;
+}
 
-    background: rgba(0, 0, 0, 0.10);
+h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* Container centrado de home */
+.home .center {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 30px;
     border-radius: 12px;
 }
 
-/* links */
-a {
-    text-decoration: none;
-    color: white; /* deixa links brancos */
-}
+/* ======================================================
+   HEADER FIXO / LOGO / MENU / LOGOUT
+====================================================== */
 
-/* títulos */
-h2 {
-    font-size: 30px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: #ffffff; /* branco forte */
-}
-
-p {
-    line-height: 1.5;
-    font-size: 16px;
-    color: #ffffff; /* TODO texto padrão em branco */
-}
-
-/* ====================================================== */
-/* HEADER                                                 */
-/* ====================================================== */
-
-header {
-    width: 100%;
-    background: linear-gradient(90deg, #1f1f23, #ed1c24);
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 12px 40px;
+body > header {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+    right: 0;
 
-    /* impede o header de sofrer zoom */
-    transform-origin: top left;
+    z-index: 1000;
+    background: linear-gradient(90deg, #1f1f23, var(--color-accent));
 }
 
-/* logo + título */
+/* Conteúdo interno do header centralizado no monitor */
+body > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: 10px var(--page-padding-x);
+    gap: 16px;
+}
+
+/* Logo + título */
 .logo-area {
     display: flex;
     align-items: center;
     flex: 0 0 auto;
+    min-width: 0;
 }
 
 .logo {
-    height: 48px;
-    margin-right: 18px;
-    filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.3));
+    height: 46px;
+    margin-right: 14px;
+    filter: drop-shadow(0 0 3px rgba(0,0,0,0.3));
 }
 
-/* título */
 header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-/* ====================================================== */
-/* MENU                                                   */
-/* ====================================================== */
-
-nav {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    margin-left: 14%;
+/* NAVIGATION */
+header nav {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 nav ul {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
     list-style: none;
     margin: 0;
     padding: 0;
+    flex-wrap: wrap; /* permite quebrar em telas menores */
 }
 
-nav ul li {
-    margin: 0 25px;
+/* Item de menu raiz */
+.menu-item {
     position: relative;
 }
 
-nav ul li a {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 16px;
-    padding: 6px 0;
-    transition: 0.25s ease;
+/* Botão de menu */
+.menu-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s, transform 0.15s, opacity 0.15s;
+    white-space: nowrap;
 }
 
-/* linha animada (hover premium) */
-nav ul li a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 0%;
-    height: 3px;
-    background: #ffffff;
-    border-radius: 3px;
-    transition: 0.25s ease;
+.menu-btn .arrow {
+    font-size: 10px;
 }
 
-nav ul li a:hover::after {
-    width: 100%;
-}
-
-nav ul li a:hover {
-    opacity: 0.85;
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
     transform: translateY(-1px);
 }
 
-/* ====================================================== */
-/* HOME                                                   */
-/* ====================================================== */
-
-.center {
-    text-align: center;
-    margin-top: 40px;
-}
-
-/* REMOVIDO: .home-logo (não será mais usado) */
-.home-logo {
-    display: none;
-}
-
-.center p {
-    font-size: 18px;
-    color: #ffffff;
-}
-
-/* DROPDOWN FLUTUANTE (NÃO EXPANDE O HEADER) */
+/* Submenu tipo "bubble" */
 .submenu-bubble {
     position: absolute;
-    top: 100%; /* exatamente abaixo do botão */
+    top: 100%;
     left: 0;
-
+    min-width: 170px;
+    margin-top: 6px;
+    padding: 8px 0;
+    background: rgba(17, 19, 25, 0.96);
+    border-radius: 10px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+    list-style: none;
     display: none;
-
-    min-width: 240px;
-    padding: 12px 0;
-
-    background: rgba(255,255,255,0.95);
-    color: #222;
-    backdrop-filter: blur(4px);
-
-    border-radius: 8px;
-    box-shadow: 0px 8px 28px rgba(0,0,0,0.25);
-
-    z-index: 9999; /* QUEBRA O HEADER: sobrepõe tudo */
-    animation: bubbleOpen 0.18s ease-out;
-}
-
-/* animação (leve) */
-@keyframes bubbleOpen {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    z-index: 1100;
 }
 
 .submenu-bubble li {
-    padding: 12px 18px;
+    padding: 8px 16px;
+    font-size: 13px;
     cursor: pointer;
-    font-size: 15px;
-    color: #222;
-    white-space: normal;
-    line-height: 1.3;
+    white-space: nowrap;
+    transition: background 0.18s, padding-left 0.18s;
 }
 
 .submenu-bubble li:hover {
-    background: rgba(0,0,0,0.08);
+    background: rgba(255, 255, 255, 0.09);
+    padding-left: 20px;
 }
 
-/* ====================================================== */
-/* SETINHA ANIMADA DO MENU                                */
-/* ====================================================== */
-
-.menu-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/* seta padrão */
-.menu-btn .arrow {
-    font-size: 13px;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-    display: inline-block;
-    opacity: 0.8;
-}
-
-/* seta girando para cima quando ativo */
-.menu-btn.active .arrow {
-    transform: rotate(180deg);
-    opacity: 1;
-}
-
-/* Botão de logout */
+/* Botão SAIR */
 .logout-btn {
-    margin-left: 25px;
-    padding: 6px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    background: #222;
+    flex: 0 0 auto;
+    padding: 8px 20px;
+    background: var(--color-accent-dark);
     color: #fff;
-    border: 1px solid #fff;
-    border-radius: 6px;
-    transition: 0.25s;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 40px;      /* mais espaço que os outros menus */
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .logout-btn:hover {
-    background: #fff;
-    color: #000;
+    background: #b71c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
 }
 
-/* ====================================================== */
-/* LOGIN SCREEN                                           */
-/* ====================================================== */
+/* ======================================================
+   TELAS MENORES – RESPONSIVIDADE DO HEADER
+====================================================== */
+
+@media (max-width: 1024px) {
+    header h1 {
+        font-size: 18px;
+    }
+
+    nav ul {
+        gap: 10px;
+    }
+
+    .logout-btn {
+        margin-left: 20px;
+        padding: 6px 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    body > header {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .logo-area {
+        justify-content: center;
+        margin-bottom: 6px;
+    }
+
+    header nav {
+        order: 3;
+        width: 100%;
+    }
+
+    .logout-btn {
+        order: 2;
+        margin-left: 0;
+    }
+
+    main {
+        margin-top: 120px; /* header maior em mobile */
+        padding: 20px 16px;
+    }
+}
+
+/* ======================================================
+   LOGIN SCREEN
+====================================================== */
 
 .login-body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 100vh;
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
     color: #ffffff;
 
-    background: url("img/background_jpl.png") no-repeat center center fixed;
+    background: url("../img/background_jpl.png") no-repeat center center fixed;
     background-size: cover;
 
     display: flex;
@@ -294,61 +275,66 @@ nav ul li a:hover {
 }
 
 .login-box {
-    background: rgba(0, 0, 0, 0.55);
-    padding: 30px 30px 25px 30px;
+    background: var(--color-panel);
+    padding: 28px 28px 24px;
     border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.45);
-    min-width: 280px;
-    text-align: center;
+    width: 320px;
+    max-width: 90vw;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
 }
 
 .login-box h2 {
     color: #fff;
-    margin-bottom: 20px;
-    font-size: 22px;
+    margin-bottom: 18px;
+    font-size: 20px;
     font-weight: 700;
+    text-align: center;
 }
 
 .login-box input {
     width: 100%;
     padding: 10px 12px;
-    margin: 8px 0;
+    margin: 6px 0;
     border: none;
     border-radius: 6px;
     font-size: 14px;
-    background: rgba(255,255,255,0.9);
-    color: #000;
-    box-sizing: border-box;
+    outline: none;
+}
+
+.login-box input:focus {
+    box-shadow: 0 0 0 2px rgba(237, 28, 36, 0.7);
 }
 
 .login-box button {
-    margin-top: 10px;
     width: 100%;
-    padding: 10px;
-    background: #ed1c24;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--color-accent);
     border: none;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
     border-radius: 6px;
-    transition: 0.25s;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .login-box button:hover {
-    background: #ff343d;
+    background: #ff3b3b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 #loginMsg {
     margin-top: 10px;
-    font-size: 13px;
-    min-height: 18px;
+    font-size: 12px;
+    text-align: center;
 }
 
-/* ====================================================== */
-/* MENUS BLOQUEADOS POR PERMISSÃO                         */
-/* ====================================================== */
-
+/* ======================================================
+   MENUS BLOQUEADOS POR PERMISSÃO
+====================================================== */
 .menu-locked {
     opacity: 0.4;
     cursor: not-allowed;
@@ -356,55 +342,4 @@ nav ul li a:hover {
 
 .menu-locked .arrow {
     opacity: 0.4;
-}
-/* ============================================================
-   AJUSTE DO HEADER / LAYOUT / BOTÃO LOGOUT
-============================================================ */
-
-/* Deixa o header com espaçamento inteligente */
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px; /* ajuda a respirar */
-    padding: 10px 30px; /* margem interna no header */
-}
-
-/* Organiza nav e logout lado-a-lado */
-nav ul {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-/* Correção para manter a área de navegação estável */
-header nav {
-    margin-right: auto;
-    margin-left: 30px; /* separa do logo */
-}
-
-/* BOTÃO LOGOUT — fica à direita com espaçamento */
-.logout-btn {
-    padding: 8px 18px;
-    background: #c62828;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 40px;        /* MAIS espaçamento que os outros menus */
-    white-space: nowrap;
-}
-
-/* Efeito ao passar o mouse */
-.logout-btn:hover {
-    background: #b71c1c;
-}
-
-/* ============================================================
-   MARGEM GLOBAL DO SITE (evita conteúdo colado nas bordas)
-============================================================ */
-main, section, .content-area, body {
-    margin-left: 20px;
-    margin-right: 20px;
 }
