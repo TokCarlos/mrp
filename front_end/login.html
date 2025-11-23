@@ -31,7 +31,7 @@
     <p id="loginMsg"></p>
 </div>
 
-<!-- JS -->
+<!-- LOGIN SCRIPT -->
 <script type="module">
     import { loginUser } from "./js/auth.js";
 
@@ -41,8 +41,8 @@
     btnLogin.addEventListener("click", async () => {
         msg.textContent = "";
 
-        const email = document.getElementById("email").value;
-        const pass  = document.getElementById("password").value;
+        const email = (document.getElementById("email").value || "").trim();
+        const pass  = (document.getElementById("password").value || "").trim();
 
         if (!email || !pass) {
             msg.textContent = "Preencha todos os campos.";
@@ -50,19 +50,24 @@
         }
 
         msg.textContent = "Validando...";
+        console.clear();
 
         try {
             const result = await loginUser(email, pass);
+            console.log("Retorno login:", result);
 
             if (result?.tokens?.access_token) {
                 msg.textContent = "Acesso permitido. Redirecionando...";
-                window.location.href = "dashboard.html";
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 500);
             } else {
                 msg.textContent = "Login inválido.";
             }
+
         } catch (e) {
             msg.textContent = "Erro ao conectar. Tente novamente.";
-            console.error(e);
+            console.error("Erro login:", e);
         }
     });
 </script>

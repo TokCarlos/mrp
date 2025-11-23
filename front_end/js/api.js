@@ -17,7 +17,6 @@ export async function neonGET(table, params = {}) {
 
     const url = new URL(`${API_URL}/${table}`);
 
-    // Adiciona filtros estilo PostgREST
     Object.keys(params).forEach(key => {
         url.searchParams.append(key, params[key]);
     });
@@ -26,15 +25,16 @@ export async function neonGET(table, params = {}) {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Accept": "application/json"
         }
     });
 
     if (!res.ok) {
+        console.error(await res.text());
         throw new Error(`Erro GET em ${table}: ${res.status}`);
     }
 
-    return await res.json();
+    return await safeJSON(res);
 }
 
 // ------------------------------------------------------------
@@ -47,16 +47,18 @@ export async function neonINSERT(table, data) {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         },
         body: JSON.stringify(data)
     });
 
     if (!res.ok) {
+        console.error(await res.text());
         throw new Error(`Erro POST em ${table}: ${res.status}`);
     }
 
-    return await res.json();
+    return await safeJSON(res);
 }
 
 // ------------------------------------------------------------
@@ -74,16 +76,18 @@ export async function neonUPDATE(table, filter = {}, data) {
         method: "PATCH",
         headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         },
         body: JSON.stringify(data)
     });
 
     if (!res.ok) {
+        console.error(await res.text());
         throw new Error(`Erro PATCH em ${table}: ${res.status}`);
     }
 
-    return await res.json();
+    return await safeJSON(res);
 }
 
 // ------------------------------------------------------------
@@ -100,13 +104,26 @@ export async function neonDELETE(table, filter = {}) {
     const res = await fetch(url.toString(), {
         method: "DELETE",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/json"
         }
     });
 
     if (!res.ok) {
+        console.error(await res.text());
         throw new Error(`Erro DELETE em ${table}: ${res.status}`);
     }
 
-    return await res.json();
+    return await safeJSON(res);
+}
+
+// ------------------------------------------------------------
+// Segurança extra: evita crash se JSON vier vazio ou inválido
+// ------------------------------------------------------------
+async function safeJSON(res) {
+    try {
+        return await res.json();
+    } catch {
+        return {};
+    }
 }

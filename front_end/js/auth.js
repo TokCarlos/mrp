@@ -1,4 +1,4 @@
-auth.js// ============================================
+// ============================================
 // AUTH CLIENT – STACK AUTH + FRONT-END MRP
 // ============================================
 
@@ -6,14 +6,15 @@ auth.js// ============================================
 const STACK_PROJECT_ID = "f222b83c-8fa8-4478-9e48-07788ec1a1cf";
 const STACK_PUBLIC_KEY = "pck_dw10n0zsne82ndgk9j9ecd5rheekhq3vxgkfpygb7krer";
 
-// Endpoints oficiais do Stack Auth
+// Endpoint base
 const STACK_BASE = "https://api.stack-auth.com/api/v1";
 
 
 // ------------------------------------------------------------
-// Salvar e carregar JWT
+// JWT STORAGE
 // ------------------------------------------------------------
 export function saveJWT(token) {
+    if (!token) return;
     localStorage.setItem("stack_jwt", token);
 }
 
@@ -28,9 +29,12 @@ export function logout() {
 
 
 // ------------------------------------------------------------
-// Registrar novo usuário
+// Registrar usuário (não será usado agora, mas mantemos ok)
 // ------------------------------------------------------------
 export async function registerUser(email, password) {
+    email = (email || "").trim();
+    password = (password || "").trim();
+
     const res = await fetch(`${STACK_BASE}/auth/register/email`, {
         method: "POST",
         headers: {
@@ -41,15 +45,20 @@ export async function registerUser(email, password) {
         body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json();
+    let data = {};
+    try { data = await res.json(); } catch {}
+
     return data;
 }
 
 
 // ------------------------------------------------------------
-// Login de usuário
+// Login do usuário
 // ------------------------------------------------------------
 export async function loginUser(email, password) {
+    email = (email || "").trim();
+    password = (password || "").trim();
+
     const res = await fetch(`${STACK_BASE}/auth/login/email`, {
         method: "POST",
         headers: {
@@ -60,8 +69,10 @@ export async function loginUser(email, password) {
         body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json();
+    let data = {};
+    try { data = await res.json(); } catch {}
 
+    // Salva token se existir
     if (data?.tokens?.access_token) {
         saveJWT(data.tokens.access_token);
     }
@@ -71,9 +82,11 @@ export async function loginUser(email, password) {
 
 
 // ------------------------------------------------------------
-// Validar JWT via JWKS (opcional, mas recomendado)
+// Validação de JWT (servidor)
 // ------------------------------------------------------------
 export async function validateJWT(token) {
+    if (!token) return null;
+
     try {
         const res = await fetch(
             `${STACK_BASE}/projects/${STACK_PROJECT_ID}/validate`,
@@ -88,7 +101,10 @@ export async function validateJWT(token) {
             }
         );
 
-        return await res.json();
+        let data = {};
+        try { data = await res.json(); } catch {}
+
+        return data;
     } catch (e) {
         console.error("Erro ao validar JWT:", e);
         return null;
