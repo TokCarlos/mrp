@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>MRP Data Inspector</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+        margin: 0;
+    }
+    #sidebar {
+        width: 260px;
+        background: #1e1e1e;
+        color: #fff;
+        padding: 15px;
+        overflow-y: auto;
+    }
+    #sidebar h2 {
+        font-size: 15px;
+        margin-bottom: 10px;
+        color: #00e4a3;
+        text-transform: uppercase;
+    }
+    .table-item {
+        padding: 8px 10px;
+        margin-bottom: 6px;
+        cursor: pointer;
+        background: #333;
+        border-radius: 5px;
+        transition: 0.2s;
+    }
+    .table-item:hover {
+        background: #444;
+    }
+    #content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+    th {
+        background: #f4f4f4;
+    }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+    <h2>Tabelas</h2>
+    <div id="lista-tabelas"></div>
+</div>
+
+<div id="content">
+    <h2 id="titulo">Selecione uma tabela</h2>
+    <div id="colunas"></div>
+    <table id="tabela-dados"></table>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+
+// LISTAR TABELAS
+async function carregarTabelas() {
+    const tabelas = await neonGet(
+        "information_schema.tables",
+        "?table_schema=eq.public&table_type=eq.BASE%20TABLE"
+    );
+
+    const div = document.getElementById("lista-tabelas");
+    div.innerHTML = "";
+
+    tabelas.forEach(t => {
+        const el = document.createElement("div");
+        el.className = "table-item";
+        el.textContent = t.table_name;
+
+        el.onclick = () => carregarTabela(t.table_name);
+
+        div.appendChild(el);
+    });
+}
+
+// CARREGAR DADOS E COLUNAS
+async function carregarTabela(nome) {
+    document.getElementById("titulo").innerText = "Tabela: " + nome;
+
+    const cols = await neonGet(
+        "information_schema.columns",
+        `?table_name=eq.${nome}&order=ordinal_position.asc`
+    );
+
+    document.getElementById("colunas").innerHTML =
+        "<strong>Colunas:</strong><br>" +
+        cols.map(c => `${c.column_name} <small>(${c.data_type})</small>`).join("<br>");
+
+    const dados = await neonGet(nome);
+    renderizarTabela(dados, cols.map(c => c.column_name));
+}
+
+function renderizarTabela(linhas, colunas) {
+    const tabela = document.getElementById("tabela-dados");
+    tabela.innerHTML = "";
+
+    let thead = "<tr>";
+    colunas.forEach(c => thead += `<th>${c}</th>`);
+    thead += "</tr>";
+    tabela.innerHTML += thead;
+
+    linhas.forEach(linha => {
+        let tr = "<tr>";
+        colunas.forEach(c => tr += `<td>${linha[c] ?? ""}</td>`);
+        tr += "</tr>";
+        tabela.innerHTML += tr;
+    });
+}
+
+carregarTabelas();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+# BACKUP ANTIGO (NÃO SUBIR)
+_old/
+
+# ARQUIVOS TEMPORÁRIOS
+tree.txt
+
+# ARQUIVOS DE LOG
+*.log
+
+# CONFIGURAÇÕES LOCAIS QUE NÃO IMPORTAM PARA O SITE
+config/
+edit/
+maps/
+
+# NODE (CASO UM DIA USE)
+node_modules/
+
+# BODY DO NETLIFY FUNCTIONS (não usa mais)
+netlify/
+netlify.toml
