@@ -3,110 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>JPL Metalúrgica – Sistema Interno</title>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- CAMINHO AJUSTADO -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <header>
-        <div class="logo-area">
-            <img src="img/logo_jpl.png" alt="Logo JPL" class="logo">
-            <h1>JPL Metalúrgica</h1>
+<header>
+    <div class="logo-area">
+        <img src="img/logo_jpl.png" alt="Logo JPL" class="logo">
+        <h1>JPL Metalúrgica</h1>
+    </div>
+
+    <nav>
+        <ul>
+            <li class="menu-item">
+                <button class="menu-btn">
+                    Produtos <span class="arrow">▼</span>
+                </button>
+                <ul class="submenu-bubble">
+                    <li onclick="loadPage('produtos_list')">Lista</li>
+                    <li onclick="loadPage('produtos_cad')">Cadastro</li>
+                    <li onclick="loadPage('produtos_tipo')">Tipos</li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <button class="menu-btn">
+                    Obras <span class="arrow">▼</span>
+                </button>
+                <ul class="submenu-bubble">
+                    <li onclick="loadPage('obras_nova')">Nova Obra</li>
+                    <li onclick="loadPage('obras_consultar')">Consultar</li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <button class="menu-btn" data-perm="op">
+                    O.P <span class="arrow">▼</span>
+                </button>
+                <ul class="submenu-bubble">
+                    <li onclick="loadPage('op_nova')">Criar O.P</li>
+                    <li onclick="loadPage('op_lista')">Listar O.P</li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <button class="menu-btn" data-perm="estoque">
+                    Estoque <span class="arrow">▼</span>
+                </button>
+                <ul class="submenu-bubble">
+                    <li onclick="loadPage('estoque_materiais')">Materiais</li>
+                    <li onclick="loadPage('estoque_critico')">Crítico</li>
+                    <li onclick="loadPage('estoque_hist')">Histórico</li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <button class="menu-btn" data-perm="corte">
+                    Controle de Corte <span class="arrow">▼</span>
+                </button>
+                <ul class="submenu-bubble">
+                    <li onclick="loadPage('corte_tubos')">Tubos</li>
+                    <li onclick="loadPage('corte_chapas')">Chapas</li>
+                    <li onclick="loadPage('corte_relatorios')">Relatórios</li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <button class="menu-btn" data-perm="compras">
+                    Compras <span class="arrow">▼</span>
+                </button>
+                <ul class="submenu-bubble">
+                    <li onclick="loadPage('compras_necessidades')">Necessidades</li>
+                    <li onclick="loadPage('compras_pedidos')">Pedidos</li>
+                    <li onclick="loadPage('compras_forn')">Fornecedores</li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <button id="logoutBtn" onclick="logout()" class="logout-btn">Sair</button>
+</header>
+
+<main id="content-area">
+    <section class="home">
+        <div class="center">
+            <h2>JPL Metalúrgica – Sistema Interno</h2>
+            <p>PCP • MRP • Estoque • Corte • Compras</p>
         </div>
+    </section>
+</main>
 
-        <!-- ===== MENU PRINCIPAL + SUBMENUS ===== -->
-        <nav>
-            <ul>
-
-                <!-- LIVRE -->
-                <li class="menu-item">
-                    <button class="menu-btn">
-                        Produtos <span class="arrow">▼</span>
-                    </button>
-                    <ul class="submenu-bubble">
-                        <li onclick="loadPage('produtos_list')">Lista</li>
-                        <li onclick="loadPage('produtos_cad')">Cadastro</li>
-                        <li onclick="loadPage('produtos_tipo')">Tipos</li>
-                    </ul>
-                </li>
-
-                <!-- LIVRE -->
-                <li class="menu-item">
-                    <button class="menu-btn">
-                        Obras <span class="arrow">▼</span>
-                    </button>
-                    <ul class="submenu-bubble">
-                        <li onclick="loadPage('obras_nova')">Nova Obra</li>
-                        <li onclick="loadPage('obras_consultar')">Consultar</li>
-                    </ul>
-                </li>
-
-                <!-- PROTEGIDO -->
-                <li class="menu-item">
-                    <button class="menu-btn" data-perm="op">
-                        O.P <span class="arrow">▼</span>
-                    </button>
-                    <ul class="submenu-bubble">
-                        <li onclick="loadPage('op_nova')">Criar O.P</li>
-                        <li onclick="loadPage('op_lista')">Listar O.P</li>
-                    </ul>
-                </li>
-
-                <!-- PROTEGIDO -->
-                <li class="menu-item">
-                    <button class="menu-btn" data-perm="estoque">
-                        Estoque <span class="arrow">▼</span>
-                    </button>
-                    <ul class="submenu-bubble">
-                        <li onclick="loadPage('estoque_materiais')">Materiais</li>
-                        <li onclick="loadPage('estoque_critico')">Crítico</li>
-                        <li onclick="loadPage('estoque_hist')">Histórico</li>
-                    </ul>
-                </li>
-
-                <!-- PROTEGIDO -->
-                <li class="menu-item">
-                    <button class="menu-btn" data-perm="corte">
-                        Controle de Corte <span class="arrow">▼</span>
-                    </button>
-                    <ul class="submenu-bubble">
-                        <li onclick="loadPage('corte_tubos')">Tubos</li>
-                        <li onclick="loadPage('corte_chapas')">Chapas</li>
-                        <li onclick="loadPage('corte_relatorios')">Relatórios</li>
-                    </ul>
-                </li>
-
-                <!-- PROTEGIDO -->
-                <li class="menu-item">
-                    <button class="menu-btn" data-perm="compras">
-                        Compras <span class="arrow">▼</span>
-                    </button>
-                    <ul class="submenu-bubble">
-                        <li onclick="loadPage('compras_necessidades')">Necessidades</li>
-                        <li onclick="loadPage('compras_pedidos')">Pedidos</li>
-                        <li onclick="loadPage('compras_forn')">Fornecedores</li>
-                    </ul>
-                </li>
-
-            </ul>
-        </nav>
-		
-		<button id="logoutBtn" onclick="logout()" class="logout-btn">Sair</button>
-    </header>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main id="content-area">
-
-        <section class="home">
-            <div class="center">
-                <h2>JPL Metalúrgica – Sistema Interno</h2>
-                <p>PCP • MRP • Estoque • Corte • Compras</p>
-            </div>
-        </section>
-
-    </main>
-
-    <script src="script.js"></script>
+<!-- CAMINHOS AJUSTADOS -->
+<script src="js/utils.js"></script>
+<script src="js/index.js"></script>
 
 </body>
 </html>

@@ -1,39 +1,26 @@
 /* ============================================================
    PERMISSÕES (EMBUTIDAS – SEM FETCH)
-   Se quiser alterar usuários/senhas/acessos, ajuste aqui.
+   (Mantido exatamente como estava)
 ============================================================ */
 
 const PERMISSIONS_DATA = {
     usuarios: [
-        {
-            user: "admin",
-            pass: "123",
-            permissoes: ["op", "estoque", "corte", "compras"]
-        },
-        {
-            user: "pcp",
-            pass: "2025",
-            permissoes: ["op", "corte"]
-        },
-        {
-            user: "almox",
-            pass: "abc",
-            permissoes: ["estoque", "compras"]
-        },
-        {
-            user: "visitante",
-            pass: "000",
-            permissoes: []
-        }
+        { user: "admin", pass: "123", permissoes: ["op", "estoque", "corte", "compras"] },
+        { user: "pcp", pass: "2025", permissoes: ["op", "corte"] },
+        { user: "almox", pass: "abc", permissoes: ["estoque", "compras"] },
+        { user: "visitante", pass: "000", permissoes: [] }
     ]
 };
 
 
 /* ============================================================
-   MENU BUBBLE (dropdown ao clicar) + SETA ANIMADA
+   MENU BUBBLE (dropdown ao clicar)
 ============================================================ */
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    // Evita erro no login.html (não tem menu)
+    if (!document.querySelector("nav")) return;
 
     const menuItems = document.querySelectorAll(".menu-item");
 
@@ -46,17 +33,14 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            // Fecha outros submenus
             document.querySelectorAll(".submenu-bubble").forEach(other => {
                 if (other !== submenu) other.style.display = "none";
             });
 
-            // Remove "active" de outros botões
             document.querySelectorAll(".menu-btn").forEach(btn => {
                 if (btn !== button) btn.classList.remove("active");
             });
 
-            // Alterna estado atual
             const aberto = submenu.style.display === "block";
 
             if (aberto) {
@@ -69,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Fechar menus ao clicar fora
     document.addEventListener("click", () => {
         document.querySelectorAll(".submenu-bubble").forEach(menu => {
             menu.style.display = "none";
@@ -88,13 +71,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function loadPage(page) {
     const content = document.getElementById("content-area");
+
+    // Evita erro no login.html
     if (!content) return;
 
     let html = "";
 
-    switch(page) {
+    switch (page) {
 
-        /* ========== PRODUTOS ========== */
+        /* === PRODUTOS === */
         case "produtos_list":
             html = `<h2>Lista de Produtos</h2>
                     <p>Aqui ficará a listagem de produtos cadastrados.</p>`;
@@ -110,8 +95,7 @@ function loadPage(page) {
                     <p>Página para configurar categorias / tipos.</p>`;
             break;
 
-
-        /* ========== OBRAS ========== */
+        /* === OBRAS === */
         case "obras_nova":
             html = `<h2>Nova Obra</h2>
                     <p>Formulário de abertura de obra.</p>`;
@@ -122,8 +106,7 @@ function loadPage(page) {
                     <p>Listagem e status das obras registradas.</p>`;
             break;
 
-
-        /* ========== ORDENS DE PRODUÇÃO ========== */
+        /* === ORDENS DE PRODUÇÃO === */
         case "op_nova":
             html = `<h2>Criar Ordem de Produção</h2>
                     <p>Interface para geração de O.P.</p>`;
@@ -134,8 +117,7 @@ function loadPage(page) {
                     <p>Página para visualizar todas as ordens emitidas.</p>`;
             break;
 
-
-        /* ========== ESTOQUE ========== */
+        /* === ESTOQUE === */
         case "estoque_materiais":
             html = `<h2>Materiais em Estoque</h2>
                     <p>Tabela com os materiais disponíveis.</p>`;
@@ -151,8 +133,7 @@ function loadPage(page) {
                     <p>Entradas e saídas registradas.</p>`;
             break;
 
-
-        /* ========== CONTROLE DE CORTE ========== */
+        /* === CONTROLE DE CORTE === */
         case "corte_tubos":
             html = `<h2>Controle de Corte – Tubos</h2>
                     <p>Apontamento de cortes e remanescentes.</p>`;
@@ -168,8 +149,7 @@ function loadPage(page) {
                     <p>Exportação de relatórios consolidados.</p>`;
             break;
 
-
-        /* ========== COMPRAS ========== */
+        /* === COMPRAS === */
         case "compras_necessidades":
             html = `<h2>Necessidades de Compras</h2>
                     <p>Materiais que precisam ser repostos.</p>`;
@@ -185,8 +165,7 @@ function loadPage(page) {
                     <p>Cadastro e controle de fornecedores.</p>`;
             break;
 
-
-        /* ========== HOME (DEFAULT) ========== */
+        /* === DEFAULT === */
         default:
             html = `<h2>JPL Metalúrgica – Sistema Interno</h2>
                     <p>Dashboard inicial (em construção).</p>`;
@@ -197,7 +176,7 @@ function loadPage(page) {
 
 
 /* ============================================================
-   FIX ZOOM DO HEADER (NÃO DEFORMA NUNCA)
+   CORREÇÃO DO HEADER EM CASO DE ZOOM
 ============================================================ */
 
 function fixHeaderZoom() {
@@ -205,10 +184,8 @@ function fixHeaderZoom() {
     if (!header) return;
 
     const zoom = window.devicePixelRatio || 1;
-
     header.style.transform = `scale(${1 / zoom})`;
     header.style.transformOrigin = "top left";
-
     header.style.width = `${100 * zoom}%`;
 }
 
@@ -217,7 +194,7 @@ window.addEventListener("load", fixHeaderZoom);
 
 
 /* ============================================================
-   ESPAÇO DO BODY SEMPRE ABAIXO DO HEADER
+   AJUSTE DE ESPAÇO ABAIXO DO HEADER
 ============================================================ */
 
 function ajustarEspacoAbaixoDoHeader() {
@@ -234,25 +211,26 @@ function ajustarEspacoAbaixoDoHeader() {
 
 window.addEventListener("load", ajustarEspacoAbaixoDoHeader);
 window.addEventListener("resize", ajustarEspacoAbaixoDoHeader);
-window.addEventListener("wheel", ajustarEspacoAbaixoDoHeader);
-window.addEventListener("keydown", e => {
-    if (e.ctrlKey && ["+", "-", "0"].includes(e.key)) {
-        setTimeout(ajustarEspacoAbaixoDoHeader, 50);
-    }
-});
 
 
 /* ============================================================
-   LOGIN / PERMISSÕES (SEM FETCH, 100% LOCAL)
+   LOGIN / PERMISSÕES
 ============================================================ */
 
 function logar() {
-    const user = document.getElementById("loginUser").value.trim();
-    const pass = document.getElementById("loginPass").value.trim();
+    const user = document.getElementById("loginUser")?.value.trim();
+    const pass = document.getElementById("loginPass")?.value.trim();
     const msg  = document.getElementById("loginMsg");
 
-    const lista = PERMISSIONS_DATA.usuarios || [];
+    if (!user || !pass) {
+        if (msg) {
+            msg.innerHTML = "Preencha usuário e senha.";
+            msg.style.color = "red";
+        }
+        return;
+    }
 
+    const lista = PERMISSIONS_DATA.usuarios || [];
     const found = lista.find(u => u.user === user && u.pass === pass);
 
     if (!found) {
@@ -270,10 +248,9 @@ function logar() {
 }
 
 function validarAcesso() {
-    const caminho = window.location.pathname.toLowerCase();
+    const path = window.location.pathname.toLowerCase();
 
-    // não força login na tela de login
-    if (caminho.includes("login.html")) return;
+    if (path.includes("login.html")) return;
 
     const user = localStorage.getItem("usuario_logado");
 
@@ -284,12 +261,12 @@ function validarAcesso() {
 
     const permissoes = JSON.parse(localStorage.getItem("permissoes") || "[]");
 
-    // bloqueia menus protegidos sem permissão
     document.querySelectorAll(".menu-btn[data-perm]").forEach(btn => {
         const perm = btn.getAttribute("data-perm");
 
         if (!permissoes.includes(perm)) {
             btn.classList.add("menu-locked");
+
             const submenu = btn.parentElement.querySelector(".submenu-bubble");
             if (submenu) submenu.remove();
         }
@@ -301,5 +278,4 @@ function logout() {
     window.location.href = "login.html";
 }
 
-// aplica validação em qualquer página (menos na tela de login)
 window.addEventListener("load", validarAcesso);
