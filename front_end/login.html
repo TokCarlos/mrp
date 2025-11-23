@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login – Sistema JPL</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -15,26 +14,58 @@
 
     <h2>Acesso ao Sistema</h2>
 
-    <input id="loginUser"
-           type="text"
-           placeholder="Usuário"
+    <input id="email"
+           type="email"
+           placeholder="Email"
            autocomplete="username"
            required>
 
-    <input id="loginPass"
+    <input id="password"
            type="password"
            placeholder="Senha"
            autocomplete="current-password"
            required>
 
-    <button id="btnLogin" onclick="logar()">Entrar</button>
+    <button id="btnLogin">Entrar</button>
 
     <p id="loginMsg"></p>
 </div>
 
 <!-- JS -->
-<script src="js/utils.js"></script>
-<script src="js/index.js"></script>
+<script type="module">
+    import { loginUser } from "./js/auth.js";
+
+    const btnLogin = document.getElementById("btnLogin");
+    const msg = document.getElementById("loginMsg");
+
+    btnLogin.addEventListener("click", async () => {
+        msg.textContent = "";
+
+        const email = document.getElementById("email").value;
+        const pass  = document.getElementById("password").value;
+
+        if (!email || !pass) {
+            msg.textContent = "Preencha todos os campos.";
+            return;
+        }
+
+        msg.textContent = "Validando...";
+
+        try {
+            const result = await loginUser(email, pass);
+
+            if (result?.tokens?.access_token) {
+                msg.textContent = "Acesso permitido. Redirecionando...";
+                window.location.href = "dashboard.html";
+            } else {
+                msg.textContent = "Login inválido.";
+            }
+        } catch (e) {
+            msg.textContent = "Erro ao conectar. Tente novamente.";
+            console.error(e);
+        }
+    });
+</script>
 
 </body>
 </html>
