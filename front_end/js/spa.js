@@ -1,53 +1,39 @@
-// =============================================
-// SPA ENGINE – Loader de Módulos MRP JPL
-// =============================================
+// =======================================================
+// SPA LOADER — CARREGA PÁGINAS E MÓDULOS INTERNOS
+// =======================================================
 
 import { logout } from "./auth.js";
 
 const app = document.getElementById("app");
 
-// ---------------------------------------------
-// Evento do botão de logout
-// ---------------------------------------------
+// Botão de logout
 document.getElementById("btnLogout").addEventListener("click", logout);
 
-// ---------------------------------------------
-// Carrega módulo inicial (dashboard)
-// ---------------------------------------------
-loadModule("dashboard");
-
-// ---------------------------------------------
-// Listener para os menus
-// ---------------------------------------------
-document.querySelectorAll("nav.menu a").forEach(link => {
-    link.addEventListener("click", e => {
+// Eventos do menu superior
+document.querySelectorAll("nav.menu a").forEach(a => {
+    a.addEventListener("click", e => {
         e.preventDefault();
-        const module = link.dataset.module;
-        if (module) loadModule(module);
+        loadModule(a.dataset.module);
     });
 });
 
-// ---------------------------------------------
-// Função principal para carregar módulos
-// ---------------------------------------------
+// Carrega módulos HTML + JS
 async function loadModule(moduleName) {
     try {
-        // Carrega HTML
-        const htmlResp = await fetch(`pages/${moduleName}.html`);
-        const html = await htmlResp.text();
+        const html = await (await fetch(`pages/${moduleName}.html`)).text();
         app.innerHTML = html;
 
-        // Carrega JS
-        import(`./pages/${moduleName}.js`)
-            .then(module => {
-                if (module.init) module.init();
-            })
-            .catch(err => {
-                console.warn("Módulo sem JS específico:", moduleName);
-            });
+        try {
+            const jsModule = await import(`./pages/${moduleName}.js`);
+            if (jsModule.init) jsModule.init();
+        } catch (err) {
+            console.log("JS opcional não encontrado:", moduleName);
+        }
 
-    } catch (err) {
-        console.error("Erro ao carregar módulo:", moduleName, err);
-        app.innerHTML = `<p>Erro ao carregar módulo: ${moduleName}</p>`;
+    } catch (e) {
+        app.innerHTML = "<p>Erro ao carregar o módulo.</p>";
     }
 }
+
+// Módulo inicial
+loadModule("dashboard");

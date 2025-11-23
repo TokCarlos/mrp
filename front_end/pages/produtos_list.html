@@ -1,47 +1,14 @@
-<section>
-    <h2>Lista de Produtos</h2>
+<h2>Produtos</h2>
 
-    <button class="btn-add" id="btnNovoProduto">+ Novo Produto</button>
+<button class="btn-add" id="btnAddProd">+ Novo Produto</button>
 
-    <table class="preview-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Tipo</th>
-                <th>Modelo</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody id="tabelaProdutos">
-            <!-- preenchido via JS -->
-        </tbody>
-    </table>
-</section>
-
-<!-- MODAL -->
-<div id="modalProduto" class="modal hidden">
-    <div class="modal-content">
-        <h3 id="modalTitulo">Novo Produto</h3>
-
-        <input type="hidden" id="prodId">
-
-        <label>Código</label>
-        <input type="text" id="prodCod" placeholder="Ex: A001">
-
-        <label>Nome</label>
-        <input type="text" id="prodNome" placeholder="Nome do produto">
-
-        <label>Tipo</label>
-        <input type="text" id="prodTipo" placeholder="Categoria / tipo">
-
-        <label>Modelo</label>
-        <input type="text" id="prodModelo" placeholder="Modelo (opcional)">
-
-        <div class="modal-actions">
-            <button id="btnSalvar">Salvar</button>
-            <button id="btnCancelar" class="btn-cancel">Cancelar</button>
-        </div>
-    </div>
-</div>
+<table class="preview-table" id="tblProdutos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Produto</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

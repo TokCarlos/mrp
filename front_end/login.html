@@ -2,9 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login – Sistema JPL</title>
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -17,40 +15,32 @@
     <input id="password" type="password" placeholder="Senha" autocomplete="current-password" required>
 
     <button id="btnLogin">Entrar</button>
+
     <p id="loginMsg"></p>
 </div>
 
 <script type="module">
-    import { loginUser } from "./js/auth.js";
+import { loginUser } from "./js/auth.js";
 
-    const btn = document.getElementById("btnLogin");
+document.getElementById("btnLogin").addEventListener("click", async () => {
     const msg = document.getElementById("loginMsg");
+    msg.textContent = "Validando...";
 
-    btn.addEventListener("click", async () => {
-        const email = document.getElementById("email").value.trim();
-        const pass = document.getElementById("password").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const pass = document.getElementById("password").value.trim();
 
-        if (!email || !pass) {
-            msg.textContent = "Preencha todos os campos.";
-            return;
+    try {
+        const res = await loginUser(email, pass);
+        if (res?.tokens?.access_token) {
+            msg.textContent = "Acesso permitido.";
+            window.location.href = "index.html";
+        } else {
+            msg.textContent = "Credenciais inválidas.";
         }
-
-        msg.textContent = "Validando...";
-
-        try {
-            const result = await loginUser(email, pass);
-
-            if (result?.tokens?.access_token) {
-                msg.textContent = "Acesso permitido. Entrando...";
-                setTimeout(() => window.location.href = "dashboard.html", 300);
-            } else {
-                msg.textContent = "Login inválido.";
-            }
-        } catch (err) {
-            msg.textContent = "Erro ao conectar.";
-            console.error(err);
-        }
-    });
+    } catch {
+        msg.textContent = "Erro ao conectar.";
+    }
+});
 </script>
 
 </body>
