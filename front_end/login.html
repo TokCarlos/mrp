@@ -2,28 +2,39 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login – Sistema JPL</title>
 
-    <!-- CAMINHO AJUSTADO -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="login-body">
 
 <div class="login-box">
+
     <h2>Acesso ao Sistema</h2>
 
-    <input id="loginUser" type="text" placeholder="Usuário">
-    <input id="loginPass" type="password" placeholder="Senha">
+    <input id="loginUser"
+           type="text"
+           placeholder="Usuário"
+           autocomplete="username"
+           required>
 
-    <button onclick="logar()">Entrar</button>
+    <input id="loginPass"
+           type="password"
+           placeholder="Senha"
+           autocomplete="current-password"
+           required>
+
+    <button id="btnLogin" onclick="logar()">Entrar</button>
 
     <p id="loginMsg"></p>
 </div>
 
-<!-- CAMINHO AJUSTADO -->
-<script src="js/index.js"></script>
+<!-- JS -->
 <script src="js/utils.js"></script>
+<script src="js/index.js"></script>
 
 </body>
 </html>

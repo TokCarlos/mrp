@@ -1,8 +1,6 @@
 /* ============================================================
    PERMISSÕES (EMBUTIDAS – SEM FETCH)
-   (Mantido exatamente como estava)
 ============================================================ */
-
 const PERMISSIONS_DATA = {
     usuarios: [
         { user: "admin", pass: "123", permissoes: ["op", "estoque", "corte", "compras"] },
@@ -16,10 +14,9 @@ const PERMISSIONS_DATA = {
 /* ============================================================
    MENU BUBBLE (dropdown ao clicar)
 ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    // Evita erro no login.html (não tem menu)
+    // Evita erro ao carregar login.html (não possui nav)
     if (!document.querySelector("nav")) return;
 
     const menuItems = document.querySelectorAll(".menu-item");
@@ -33,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener("click", function (e) {
             e.stopPropagation();
 
+            // Fecha todos os outros submenus
             document.querySelectorAll(".submenu-bubble").forEach(other => {
                 if (other !== submenu) other.style.display = "none";
             });
@@ -54,13 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.addEventListener("click", () => {
-        document.querySelectorAll(".submenu-bubble").forEach(menu => {
-            menu.style.display = "none";
-        });
-
-        document.querySelectorAll(".menu-btn").forEach(btn => {
-            btn.classList.remove("active");
-        });
+        document.querySelectorAll(".submenu-bubble").forEach(menu => menu.style.display = "none");
+        document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
     });
 });
 
@@ -68,104 +61,77 @@ document.addEventListener("DOMContentLoaded", function () {
 /* ============================================================
    SISTEMA DE CARREGAMENTO DE PÁGINAS
 ============================================================ */
-
 function loadPage(page) {
     const content = document.getElementById("content-area");
-
-    // Evita erro no login.html
-    if (!content) return;
+    if (!content) return; // evita erro no login
 
     let html = "";
 
     switch (page) {
-
-        /* === PRODUTOS === */
         case "produtos_list":
-            html = `<h2>Lista de Produtos</h2>
-                    <p>Aqui ficará a listagem de produtos cadastrados.</p>`;
+            html = `<h2>Lista de Produtos</h2><p>Aqui ficará a listagem de produtos cadastrados.</p>`;
             break;
 
         case "produtos_cad":
-            html = `<h2>Cadastro de Produto</h2>
-                    <p>Formulário para cadastrar novos produtos.</p>`;
+            html = `<h2>Cadastro de Produto</h2><p>Formulário para cadastrar novos produtos.</p>`;
             break;
 
         case "produtos_tipo":
-            html = `<h2>Tipos de Produtos</h2>
-                    <p>Página para configurar categorias / tipos.</p>`;
+            html = `<h2>Tipos de Produtos</h2><p>Página para configurar categorias / tipos.</p>`;
             break;
 
-        /* === OBRAS === */
         case "obras_nova":
-            html = `<h2>Nova Obra</h2>
-                    <p>Formulário de abertura de obra.</p>`;
+            html = `<h2>Nova Obra</h2><p>Formulário de abertura de obra.</p>`;
             break;
 
         case "obras_consultar":
-            html = `<h2>Consultar Obras</h2>
-                    <p>Listagem e status das obras registradas.</p>`;
+            html = `<h2>Consultar Obras</h2><p>Listagem e status das obras registradas.</p>`;
             break;
 
-        /* === ORDENS DE PRODUÇÃO === */
         case "op_nova":
-            html = `<h2>Criar Ordem de Produção</h2>
-                    <p>Interface para geração de O.P.</p>`;
+            html = `<h2>Criar Ordem de Produção</h2><p>Interface para geração de O.P.</p>`;
             break;
 
         case "op_lista":
-            html = `<h2>Lista de O.P</h2>
-                    <p>Página para visualizar todas as ordens emitidas.</p>`;
+            html = `<h2>Lista de O.P</h2><p>Página para visualizar todas as ordens emitidas.</p>`;
             break;
 
-        /* === ESTOQUE === */
         case "estoque_materiais":
-            html = `<h2>Materiais em Estoque</h2>
-                    <p>Tabela com os materiais disponíveis.</p>`;
+            html = `<h2>Materiais em Estoque</h2><p>Tabela com os materiais disponíveis.</p>`;
             break;
 
         case "estoque_critico":
-            html = `<h2>Estoque Crítico</h2>
-                    <p>Materiais abaixo do nível mínimo.</p>`;
+            html = `<h2>Estoque Crítico</h2><p>Materiais abaixo do nível mínimo.</p>`;
             break;
 
         case "estoque_hist":
-            html = `<h2>Histórico de Movimentações</h2>
-                    <p>Entradas e saídas registradas.</p>`;
+            html = `<h2>Histórico de Movimentações</h2><p>Entradas e saídas registradas.</p>`;
             break;
 
-        /* === CONTROLE DE CORTE === */
         case "corte_tubos":
-            html = `<h2>Controle de Corte – Tubos</h2>
-                    <p>Apontamento de cortes e remanescentes.</p>`;
+            html = `<h2>Controle de Corte – Tubos</h2><p>Apontamento de cortes e remanescentes.</p>`;
             break;
 
         case "corte_chapas":
-            html = `<h2>Controle de Corte – Chapas</h2>
-                    <p>Registro e monitoramento de chapas cortadas.</p>`;
+            html = `<h2>Controle de Corte – Chapas</h2><p>Registro e monitoramento de chapas cortadas.</p>`;
             break;
 
         case "corte_relatorios":
-            html = `<h2>Relatórios de Corte</h2>
-                    <p>Exportação de relatórios consolidados.</p>`;
+            html = `<h2>Relatórios de Corte</h2><p>Exportação de relatórios consolidados.</p>`;
             break;
 
-        /* === COMPRAS === */
         case "compras_necessidades":
-            html = `<h2>Necessidades de Compras</h2>
-                    <p>Materiais que precisam ser repostos.</p>`;
+            html = `<h2>Necessidades de Compras</h2><p>Materiais que precisam ser repostos.</p>`;
             break;
 
         case "compras_pedidos":
-            html = `<h2>Pedidos de Compras</h2>
-                    <p>Listagem de pedidos realizados.</p>`;
+            html = `<h2>Pedidos de Compras</h2><p>Listagem de pedidos realizados.</p>`;
             break;
 
         case "compras_forn":
-            html = `<h2>Fornecedores</h2>
-                    <p>Cadastro e controle de fornecedores.</p>`;
+            html = `<h2>Fornecedores</h2><p>Cadastro e controle de fornecedores.</p>`;
             break;
 
-        /* === DEFAULT === */
         default:
             html = `<h2>JPL Metalúrgica – Sistema Interno</h2>
                     <p>Dashboard inicial (em construção).</p>`;
@@ -176,9 +142,8 @@ function loadPage(page) {
 
 
 /* ============================================================
-   CORREÇÃO DO HEADER EM CASO DE ZOOM
+   CORREÇÃO DE ZOOM E ESPAÇO DO HEADER
 ============================================================ */
-
 function fixHeaderZoom() {
     const header = document.querySelector("header");
     if (!header) return;
@@ -189,34 +154,23 @@ function fixHeaderZoom() {
     header.style.width = `${100 * zoom}%`;
 }
 
-window.addEventListener("resize", fixHeaderZoom);
-window.addEventListener("load", fixHeaderZoom);
-
-
-/* ============================================================
-   AJUSTE DE ESPAÇO ABAIXO DO HEADER
-============================================================ */
-
 function ajustarEspacoAbaixoDoHeader() {
     const header = document.querySelector("header");
     if (!header) return;
 
     const alturaHeader = header.getBoundingClientRect().height;
-
-    document.documentElement.style.setProperty(
-        "--header-height",
-        `${alturaHeader}px`
-    );
+    document.documentElement.style.setProperty("--header-height", `${alturaHeader}px`);
 }
 
+window.addEventListener("resize", fixHeaderZoom);
+window.addEventListener("load", fixHeaderZoom);
 window.addEventListener("load", ajustarEspacoAbaixoDoHeader);
 window.addEventListener("resize", ajustarEspacoAbaixoDoHeader);
 
 
 /* ============================================================
-   LOGIN / PERMISSÕES
+   LOGIN / PERMISSÕES (CORRIGIDO)
 ============================================================ */
-
 function logar() {
     const user = document.getElementById("loginUser")?.value.trim();
     const pass = document.getElementById("loginPass")?.value.trim();
@@ -244,18 +198,28 @@ function logar() {
     localStorage.setItem("usuario_logado", found.user);
     localStorage.setItem("permissoes", JSON.stringify(found.permissoes || []));
 
-    window.location.href = "index.html";
+    window.location.replace("index.html");
 }
+
 
 function validarAcesso() {
     const path = window.location.pathname.toLowerCase();
 
-    if (path.includes("login.html")) return;
+    // identifica login independentemente da URL (Netlify/GitHub)
+    if (
+        path.endsWith("login") ||
+        path.endsWith("login.html") ||
+        path.endsWith("/login") ||
+        path.endsWith("/login.html") ||
+        path.includes("login.html")
+    ) {
+        return;
+    }
 
     const user = localStorage.getItem("usuario_logado");
 
     if (!user) {
-        window.location.href = "login.html";
+        window.location.replace("login.html");
         return;
     }
 
@@ -273,9 +237,11 @@ function validarAcesso() {
     });
 }
 
+
 function logout() {
-    localStorage.clear();
-    window.location.href = "login.html";
+    localStorage.removeItem("usuario_logado");
+    localStorage.removeItem("permissoes");
+    window.location.replace("login.html");
 }
 
 window.addEventListener("load", validarAcesso);
